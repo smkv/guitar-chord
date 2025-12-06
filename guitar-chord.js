@@ -47,38 +47,37 @@ class GuitarChord extends HTMLElement {
             fret.setAttribute('stroke', this.color);
             fret.setAttribute('stroke-width', model.startFret + i === 1 ? '5' : '1');
             svg.append(fret);
+
+            const fretLabel = document.createElementNS(svgNamespace, 'text');
+            fretLabel.setAttribute('x', String(xMargin - 10));
+            fretLabel.setAttribute('y', String(stringsStartTop + (fretSpace * i) + (fretSpace / 2) + 4));
+            fretLabel.setAttribute('text-anchor', 'end');
+            fretLabel.setAttribute('font-size', '12');
+            fretLabel.textContent = String(model.startFret + i);
+            svg.append(fretLabel);
         }
-
-
-        const fretLabel = document.createElementNS(svgNamespace, 'text');
-        fretLabel.setAttribute('x', String(xMargin - 10));
-        fretLabel.setAttribute('y', String(stringsStartTop + (fretSpace / 2) + 6));
-        fretLabel.setAttribute('text-anchor', 'end');
-        fretLabel.setAttribute('font-size', '12');
-        fretLabel.textContent = String(model.startFret);
-        svg.append(fretLabel);
-
 
         const stringSpace = (width - xMargin - xMargin) / (model.strings.length - 1);
         let bareStart = 0;
         let bareEnd = 0;
+        let bareY = 0;
 
         for (let i = 0; i < model.strings.length; i++) {
             const x = stringSpace * i + xMargin;
             if (model.strings[i].fret && model.strings[i].finger === 1) {
                 bareStart = bareStart === 0 ? x : Math.min(bareStart, x);
                 bareEnd = bareEnd === 0 ? x : Math.max(bareEnd, x);
+                bareY = stringsStartTop + (fretSpace * (model.strings[i].fret - model.startFret)) + (fretSpace / 2);
             }
         }
 
 
         if (bareStart !== bareEnd) {
-            const y = stringsStartTop + fretSpace - (fretSpace / 2);
             const bare = document.createElementNS(svgNamespace, 'line');
             bare.setAttribute('x1', String(bareStart));
-            bare.setAttribute('y1', String(y));
+            bare.setAttribute('y1', String(bareY));
             bare.setAttribute('x2', String(bareEnd));
-            bare.setAttribute('y2', String(y));
+            bare.setAttribute('y2', String(bareY));
             bare.setAttribute('stroke', this.color);
             bare.setAttribute('stroke-width', String(fingerRadius * 2));
             bare.setAttribute('stroke-opacity', '0.5');
@@ -248,13 +247,32 @@ class GuitarChord extends HTMLElement {
         'Cdim': 'x|3-1|4-2|5-4|4-3|x',
         'Cdim7': '2-2|x|1-1|2-3|1-1|x',
         'Caug': 'x|3-4|2-3|1-1|1-2|o',
-        'Caug(0)': 'x|x|2-3|1-1|1-2|o',
-        'Caug(00)': 'x|3-4|2-3|1-1|1-2|o',
         'Caug(5)': '8-4|7-3|6-2|5-1|5-1|x',
         'Csus2': 'x|3-1|5-3|5-4|3-1|3-1',
         'Csus2(10)': 'x|x|10-1|12-3|13-4|10-1',
         'Csus': 'x|3-3|3-4|o|1-1|x',
         'Csus(3)': 'x|3-1|5-2|5-3|6-4|3-1',
+        'Csus(8)': '8-1|10-2|10-3|10-4|8-1|8-1',
+        'Cmaj7': 'x|x|2-2|4-4|1-1|3-3',
+        'Cmaj7(3)': 'x|3-1|5-3|4-2|5-4|3-1',
+        'Cmaj7(5)': 'x|7-3|5-1|5-1|5-1|7-4',
+        'Cmaj7(7)': 'x|x|10-4|9-3|8-2|7-1',
+        'Cmaj7(8)': '8-1|10-4|9-2|9-3|8-1|8-1',
+        'Cm7': 'x|3-3|1-1|3-4|1-1|x',
+        'Cm7(1)': 'x|1-1|1-1|3-3|1-1|3-4',
+        'Cm7(3)': 'x|3-1|5-3|3-1|4-2|3-1',
+        'Cm7(4)': 'x|x|5-2|5-3|4-1|6-4',
+        'Cm7(8)': '8-1|10-3|8-1|8-1|8-1|8-1',
+        'C7sus4': 'x|3-1|5-3|3-1|6-4|3-1',
+        'C7sus4(8)': '8-1|10-3|8-1|10-4|8-1|8-1',
+        'Cmaj9': 'x|3-2|2-1|4-4|3-3|x',
+        'Cmaj9(3)': 'x|3-1|5-3|4-2|3-1|3-1',
+        'Cmaj9(7)': '8-2|7-1|9-4|7-1|8-3|7-1',
+        'Cmaj9(10)': 'x|x|10-1|12-3|12-4|10-1',
+        'Cmaj11': 'x|3-3|2-2|4-4|1-1|1-1',
+        'Cmaj13': 'x|3-1|x|4-2|5-4|5-4',
+        'Cmaj13(7)': '8-2|7-1|7-1|7-1|8-3|7-1',
+        'Cadd9': '8-4|7-2|5-1|7-3|5-1|x',
     };
 }
 

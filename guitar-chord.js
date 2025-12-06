@@ -1,0 +1,261 @@
+class GuitarChord extends HTMLElement {
+    static observedAttributes = ['name', 'value', 'color', 'background-color', 'silent-string-color', 'string-notes'];
+
+    constructor() {
+        super();
+    }
+
+    connectedCallback() {
+        this.attachShadow({mode: 'open'});
+        this.render();
+    }
+
+    render() {
+        const svgNamespace = 'http://www.w3.org/2000/svg';
+        this.shadowRoot.innerHTML = '';
+        const model = this.model;
+        const width = 160;
+        const height = 160;
+        const stringsStartTop = 30;
+        const xMargin = 25;
+        const fingerRadius = 9;
+
+        const svg = document.createElementNS(svgNamespace, 'svg');
+        svg.setAttribute('xmlns', svgNamespace);
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        svg.setAttribute('width', String(width));
+        svg.setAttribute('height', String(height));
+        svg.setAttribute('style', `font-family: Arial, sans-serif; background-color: ${this.backgroundColor};`);
+
+        const text = document.createElementNS(svgNamespace, 'text');
+        text.setAttribute('x', String(width / 2));
+        text.setAttribute('y', '15');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('font-size', '16');
+        text.setAttribute('font-weight', '900');
+        text.textContent = this.name;
+        svg.append(text);
+
+        const fretSpace = (height - stringsStartTop - 10) / model.visibleFretCount;
+        for (let i = 0; i < model.visibleFretCount; i++) {
+            const y = stringsStartTop + (fretSpace * i);
+            const fret = document.createElementNS(svgNamespace, 'line');
+            fret.setAttribute('x1', String(xMargin - 1));
+            fret.setAttribute('y1', String(y));
+            fret.setAttribute('x2', String(width - xMargin + 1));
+            fret.setAttribute('y2', String(y));
+            fret.setAttribute('stroke', this.color);
+            fret.setAttribute('stroke-width', model.startFret + i === 1 ? '5' : '1');
+            svg.append(fret);
+        }
+
+
+        const fretLabel = document.createElementNS(svgNamespace, 'text');
+        fretLabel.setAttribute('x', String(xMargin - 10));
+        fretLabel.setAttribute('y', String(stringsStartTop + (fretSpace / 2) + 6));
+        fretLabel.setAttribute('text-anchor', 'end');
+        fretLabel.setAttribute('font-size', '12');
+        fretLabel.textContent = String(model.startFret);
+        svg.append(fretLabel);
+
+
+        const stringSpace = (width - xMargin - xMargin) / (model.strings.length - 1);
+        let bareStart = 0;
+        let bareEnd = 0;
+
+        for (let i = 0; i < model.strings.length; i++) {
+            const x = stringSpace * i + xMargin;
+            if (model.strings[i].fret && model.strings[i].finger === 1) {
+                bareStart = bareStart === 0 ? x : Math.min(bareStart, x);
+                bareEnd = bareEnd === 0 ? x : Math.max(bareEnd, x);
+            }
+        }
+
+
+        if (bareStart !== bareEnd) {
+            const y = stringsStartTop + fretSpace - (fretSpace / 2);
+            const bare = document.createElementNS(svgNamespace, 'line');
+            bare.setAttribute('x1', String(bareStart));
+            bare.setAttribute('y1', String(y));
+            bare.setAttribute('x2', String(bareEnd));
+            bare.setAttribute('y2', String(y));
+            bare.setAttribute('stroke', this.color);
+            bare.setAttribute('stroke-width', String(fingerRadius * 2));
+            bare.setAttribute('stroke-opacity', '0.5');
+            svg.append(bare);
+        }
+
+        for (let i = 0; i < model.strings.length; i++) {
+            const x = stringSpace * i + xMargin;
+            const string = document.createElementNS(svgNamespace, 'line');
+            string.setAttribute('x1', String(x));
+            string.setAttribute('y1', String(stringsStartTop));
+            string.setAttribute('x2', String(x));
+            string.setAttribute('y2', String(height - 10));
+            string.setAttribute('stroke', model.strings[i].fret === null ? this.silentStringColor : this.color);
+            string.setAttribute('stroke-width', '1.5');
+            svg.append(string);
+
+            const label = document.createElementNS(svgNamespace, 'text');
+            label.setAttribute('x', String(x));
+            label.setAttribute('y', String(stringsStartTop - 5));
+            label.setAttribute('text-anchor', 'middle');
+            label.setAttribute('font-size', '12');
+            if (model.strings[i].fret == null) {
+                label.setAttribute('stroke', this.silentStringColor);
+                label.textContent = 'x';
+            } else if (model.strings[i].fret === 0) {
+                label.textContent = 'o';
+            } else {
+                label.textContent = '';
+            }
+            svg.append(label);
+
+            if (model.strings[i].fret) {
+                const fingerY = stringsStartTop + (fretSpace * (model.strings[i].fret - model.startFret)) + (fretSpace / 2);
+                const finger = document.createElementNS(svgNamespace, 'circle');
+                finger.setAttribute('cx', String(x));
+                finger.setAttribute('cy', String(fingerY));
+                finger.setAttribute('r', String(fingerRadius));
+                finger.setAttribute('fill', this.color);
+                svg.append(finger);
+
+                if (model.strings[i].finger !== 0) {
+                    const fingerLabel = document.createElementNS(svgNamespace, 'text');
+                    fingerLabel.setAttribute('x', String(x));
+                    fingerLabel.setAttribute('y', String(fingerY + 5));
+                    fingerLabel.setAttribute('text-anchor', 'middle');
+                    fingerLabel.setAttribute('font-size', '12');
+                    fingerLabel.setAttribute('fill', this.backgroundColor);
+                    fingerLabel.textContent = String(model.strings[i].finger);
+                    svg.append(fingerLabel);
+                }
+            }
+
+            const note = document.createElementNS(svgNamespace, 'text');
+            note.setAttribute('x', String(x));
+            note.setAttribute('y', String(height));
+            note.setAttribute('text-anchor', 'middle');
+            note.setAttribute('font-size', '10');
+            note.setAttribute('font-weight', '600');
+            note.textContent = this.stringNotes[i] || '';
+            svg.append(note);
+        }
+
+        this.shadowRoot.append(svg);
+    }
+
+    get name() {
+        return this.getAttribute('name') || '';
+    }
+
+    set name(value) {
+        this.setAttribute('name', value);
+    }
+
+    get value() {
+        return this.getAttribute('value') || GuitarChord.CHORDS[this.name] || '';
+    }
+
+    set value(value) {
+        this.setAttribute('value', value);
+    }
+
+    get color() {
+        return this.getAttribute('color') || 'black';
+    }
+
+    set color(value) {
+        this.setAttribute('color', value);
+    }
+
+    get backgroundColor() {
+        return this.getAttribute('background-color') || 'white';
+    }
+
+    set backgroundColor(value) {
+        this.setAttribute('background-color', value);
+    }
+
+    get silentStringColor() {
+        return this.getAttribute('silent-string-color') || '#D70040';
+    }
+
+    set silentStringColor(value) {
+        this.setAttribute('silent-string-color', value);
+    }
+
+    get stringNotes() {
+        return this.getAttribute('string-notes')?.split('|') || ['E', 'B', 'G', 'D', 'A', 'E'];
+    }
+
+    set stringNotes(values) {
+        this.setAttribute('string-notes', values?.join('|'));
+    }
+
+    get model() {
+        let split = this.value.split('|').filter(Boolean);
+        let strings = [];
+        let stringPattern = /o|x|\d+(-(\d))?/i;
+        for (let i = 0; i < split.length; i++) {
+            let fret = 0;
+            let finger = 0;
+            let error = false;
+            let item = split[i];
+            let result = stringPattern.exec(item);
+            if (result !== null) {
+                if (result[0] === 'o') {
+                    fret = 0;
+                } else if (result[0] === 'x') {
+                    fret = null;
+                } else {
+                    fret = parseInt(result[0]);
+                    if (result[2]) {
+                        finger = parseInt(result[2]);
+                    }
+                }
+            } else {
+                error = true;
+                console.log('Invalid string pattern', this.name, item);
+            }
+            strings.push({
+                finger,
+                fret
+            });
+        }
+
+        let minFret = strings.map(s => s.fret).filter(f => f !== null).reduce((previousValue, currentValue) => previousValue ? Math.min(previousValue, currentValue) : currentValue);
+        let maxFret = strings.map(s => s.fret).filter(f => f !== null).reduce((previousValue, currentValue) => previousValue ? Math.max(previousValue, currentValue) : currentValue);
+        let visibleFretCount = Math.max(3, maxFret - minFret + 1);
+        let startFret = Math.max(1, maxFret - visibleFretCount + 1);
+        return {
+            startFret,
+            visibleFretCount,
+            strings
+        };
+    }
+
+    static CHORDS = {
+        'C': 'x|3-3|2-2|o|1-1|o',
+        'C(3)': 'x|3-1|5-2|5-3|5-4|3-1',
+        'C(5)': 'x|x|5-1|5-1|5-1|8-4',
+        'Cm': 'x|3-3|1-1|o|1-2|3-4',
+        'Cm(3)': 'x|3-1|5-3|5-4|4-2|3-1',
+        'Cm(8)': '8-1|10-3|10-4|8-1|8-1|8-1',
+        'C7': 'x|3-3|2-2|3-4|1-1|o',
+        'C7(3)': 'x|3-1|5-3|3-1|5-4|3-1',
+        'C5': 'x|x|x|o|1-1|x',
+        'Cdim': 'x|3-1|4-2|5-4|4-3|x',
+        'Cdim7': '2-2|x|1-1|2-3|1-1|x',
+        'Caug': 'x|3-4|2-3|1-1|1-2|o',
+        'Caug(0)': 'x|x|2-3|1-1|1-2|o',
+        'Caug(00)': 'x|3-4|2-3|1-1|1-2|o',
+        'Caug(5)': '8-4|7-3|6-2|5-1|5-1|x',
+        'Csus2': 'x|3-1|5-3|5-4|3-1|3-1',
+        'Csus2(10)': 'x|x|10-1|12-3|13-4|10-1',
+        'Csus': 'x|3-3|3-4|o|1-1|x',
+        'Csus(3)': 'x|3-1|5-2|5-3|6-4|3-1',
+    };
+}
+
+customElements.define('guitar-chord', GuitarChord);

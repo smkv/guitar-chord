@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guitar Chord</title>
+</head>
+<body>
+<div id="chordList"></div>
+
+<script src="guitar-chord.js"></script>
+<script>
+    const chordList = document.getElementById('chordList');
+    const chordGroups = new Map();
+    for (const name of Object.keys(GuitarChord.CHORDS)) {
+        const group = name.charAt(0);
+        if (!chordGroups.hasOwnProperty(group)) {
+            chordGroups[group] = [];
+        }
+        chordGroups[group].push(name);
+    }
+
+    for (const group in chordGroups) {
+        const h2 = document.createElement('h2');
+        h2.textContent = group + ' chords';
+        chordList.append(h2);
+        for (const name of chordGroups[group]) {
+            const chord = document.createElement('guitar-chord');
+            chord.name = name;
+            chordList.append(chord);
+        }
+    }
+
+</script>
+</body>
+</html>

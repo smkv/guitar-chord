@@ -1,6 +1,6 @@
 # Guitar Chord Web Component
 
-![7-popular-chords.png](7-popular-chords.png)
+![7-popular-chords.png](examples/7-popular-chords.png)
 
 A simple, dependency-free web component to display guitar chord diagrams as SVG images.
 
@@ -55,7 +55,7 @@ The component includes a library of over 1000 chords. Many chords can be played 
 *   Alternate voicings are indicated by a number in parentheses, like `D(5)`. This number represents the **lowest fret** used in that particular chord shape.
 
 For example, the built-in library contains multiple voicings for the D major chord: `D`, `D(2)`, `D(5)`, `D(7)`, `D(10)`, and `D(12)`.
-![chort-d-variations.png](chort-d-variations.png)
+![chort-d-variations.png](examples/chort-d-variations.png)
 
 ### Notes
 
@@ -70,7 +70,7 @@ For example, the built-in library contains multiple voicings for the D major cho
 | B/H          | Si   |
 
 ### Finger numbers
-![finger-numbers.png](finger-numbers.png)
+![finger-numbers.png](examples/finger-numbers.png)
 
 
 ### Examples
@@ -128,9 +128,10 @@ A standard ukulele has 4 strings tuned to G-C-E-A. Here is how you would display
 <guitar-chord
   name="G (Ukulele)"
   value="2-2|3-3|2-1|o"
-  open-string-notes="""A|E|C|G"
+  open-string-notes="A|E|C|G"
 ></guitar-chord>
 ```
+![ukulele-example.png](examples/ukulele-example.png)
 
 ### 4-String Bass Example
 
@@ -144,3 +145,4 @@ Here is a G major arpeggio on a 4-string bass guitar (E-A-D-G tuning).
   open-string-notes="G|D|A|E"
 ></guitar-chord>
 ```
+![bass-example.png](examples/bass-example.png)

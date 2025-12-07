@@ -15,9 +15,32 @@
 <guitar-chord name="Em"></guitar-chord>
 <guitar-chord name="Am"></guitar-chord>
 
+<h2>Ukulele examples</h2>
+<!-- Ukulele C Major Chord -->
+<guitar-chord
+        name="C (Ukulele)"
+        value="3-3|o|o|o"
+        open-string-notes="A|E|C|G"
+></guitar-chord>
+
+<!-- Ukulele G Major Chord -->
+<guitar-chord
+        name="G (Ukulele)"
+        value="2-2|3-3|2-1|o"
+        open-string-notes="A|E|C|G"
+></guitar-chord>
+
+<h2>Bass guitar examples</h2>
+<!-- Bass G Major Arpeggio -->
+<guitar-chord
+        name="G (Bass)"
+        value="5-3|x|5-3|3-1"
+        open-string-notes="G|D|A|E"
+></guitar-chord>
+
 <div id="chordList"></div>
 
-<script src="guitar-chord.js"></script>
+<script src="../guitar-chord.js"></script>
 <script>
     const chordList = document.getElementById('chordList');
     const chordGroups = new Map();

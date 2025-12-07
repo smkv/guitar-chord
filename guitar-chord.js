@@ -149,7 +149,7 @@ class GuitarChord extends HTMLElement {
             note.setAttribute('text-anchor', 'middle');
             note.setAttribute('font-size', '10');
             note.setAttribute('font-weight', '600');
-            note.setAttribute('fill', this.color);
+            note.setAttribute('fill', model.strings[i].fret === null ? this.mutedStringColor : this.color);
             note.textContent = this.openStringNotes[i] || '';
             svg.append(note);
         }
@@ -222,7 +222,7 @@ class GuitarChord extends HTMLElement {
     get model() {
         let split = this.value.split('|').filter(Boolean);
         let strings = [];
-        let stringPattern = /o|x|\d+(-([1-4T]))?/i;
+        let stringPattern = /o|x|\d+(-([1-4Tt]))?/i;
         for (let i = 0; i < split.length; i++) {
             let fret = 0;
             let finger = 0;
@@ -498,6 +498,21 @@ class GuitarChord extends HTMLElement {
         'Dmaj13(9)': '10-1|x|11-2|11-2|12-4|12-4',
         'Dadd9': 'x|5-3|4-2|2-1|5-4|2-1',
         'Dadd9(7)': '10-4|9-2|7-1|9-3|7-1|x',
+        'D6add9': 'x|5-2|4-1|4-1|5-3|5-4',
+        'D6add9(7)': '10-4|x|9-2|9-3|7-1|x',
+        'D6add9(9)': '10-2|9-1|9-1|9-1|10-3|10-4',
+        'Dm6': 'x|x|o|2-2|o|1-1',
+        'Dm6(3)': 'x|5-3|3-1|4-2|3-1|5-4',
+        'Dm6(6)': 'x|x|7-1|7-3|6-1|7-4',
+        'Dm6(7)': '7-1|8-2|7-1|7-1|10-4|7-1',
+        'Dm6(10)': '10-1|12-2|12-3|10-1|12-4|10-1',
+        'Dm9': 'x|5-2|3-1|5-3|5-4|x',
+        'Dm9(10)': '10-1|x|10-1|10-1|10-1|12-4',
+        'Dm11': 'x|x|o|o|1-2|1-3',
+        'Dm11(5)': 'x|5-1|5-1|5-1|6-2|5-1',
+        'Dm11(10)': '10-1|10-1|10-1|10-1|10-1|10-1',
+        'Dm13': 'x|5-1|7-3|5-1|6-2|7-4',
+        'Dm13(10)': '10-1|12-2|10-1|10-1|12-3|12-4',
 
 
         'G': '3-2|2-1|o|o|o|3-3',

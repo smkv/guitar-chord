@@ -33,7 +33,7 @@ The component is configured through HTML attributes.
 
 | Attribute           | Type    | Description                                                                                                                                                                                                                                                                                                                                               |
 |---------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`              | string  | **(Mandatory)** The name of the chord to display from the built-in library (e.g., "C", "Am", "G7"). This is ignored if the `value` attribute is present.                                                                                                                                                                                                  |
+| `name`              | string  | **(Mandatory)** The name of the chord to display from the built-in library (e.g., "C", "Am", "G7"). Or a custom chord name if the `value` attribute is present.                                                                                                                                                                                           |
 | `value`             | string  | **(Conditional)** A pipe-separated string that defines a custom chord. If this attribute is present, it takes precedence over `name`. The format is `s1\|s2\|s3\|s4\|s5\|s6`, where `s1` is the 1st (thinnest) string. Each part can be: `x` (muted), `o` (open), a fret number (e.g., `3`), or a fret number with a finger (`fret-finger`, e.g., `3-4`). |
 | `open-string-notes` | string  | **(Conditional)** A pipe-separated open string notes. By default - `E\|A\|D\|G\|B\|E` for the standard 6-string guitar (classical/acoustic).                                                                                                                                                                                                              |
 
@@ -69,6 +69,10 @@ For example, the built-in library contains multiple voicings for the D major cho
 | A            | La   |
 | B/H          | Si   |
 
+### Finger numbers
+![finger-numbers.png](finger-numbers.png)
+
+
 ### Examples
 
 #### 1. Display a built-in chord
@@ -96,7 +100,7 @@ You can easily create a "dark mode" version of a chord diagram by setting the co
   name="Em"
   color="white"
   background-color="#333"
-  silent-string-color="gray"
+  muted-string-color="gray"
 ></guitar-chord>
 ```
 

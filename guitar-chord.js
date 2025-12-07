@@ -218,7 +218,7 @@ class GuitarChord extends HTMLElement {
     get model() {
         let split = this.value.split('|').filter(Boolean);
         let strings = [];
-        let stringPattern = /o|x|\d+(-(\d))?/i;
+        let stringPattern = /o|x|\d+(-([1-4T]))?/i;
         for (let i = 0; i < split.length; i++) {
             let fret = 0;
             let finger = 0;

@@ -47,6 +47,16 @@ The component is configured through HTML attributes.
 | `muted-string-color`  | string | `#D70040` <img width="40" height="20" src="https://dummyimage.com/40x20/D70040/D70040.png">   | The color for muted ("x") strings.                   |
 
 
+### Built-in Chord Naming
+
+The component includes a library of over 1000 chords. Many chords can be played in different positions (voicings) along the guitar neck. The naming convention helps distinguish between these variations.
+
+*   A plain chord name like `D` usually refers to the most common, open-position voicing.
+*   Alternate voicings are indicated by a number in parentheses, like `D(5)`. This number represents the **lowest fret** used in that particular chord shape.
+
+For example, the built-in library contains multiple voicings for the D major chord: `D`, `D(2)`, `D(5)`, `D(7)`, `D(10)`, and `D(12)`.
+![chort-d-variations.png](chort-d-variations.png)
+
 ### Examples
 
 #### 1. Display a built-in chord

@@ -57,6 +57,18 @@ The component includes a library of over 1000 chords. Many chords can be played 
 For example, the built-in library contains multiple voicings for the D major chord: `D`, `D(2)`, `D(5)`, `D(7)`, `D(10)`, and `D(12)`.
 ![chort-d-variations.png](chort-d-variations.png)
 
+### Notes
+
+| Alphabetical | Note |
+|--------------|------|
+| C            | Do   |
+| D            | Re   |
+| E            | Mi   |
+| F            | Fa   |
+| G            | So   |
+| A            | La   |
+| B/H          | Si   |
+
 ### Examples
 
 #### 1. Display a built-in chord

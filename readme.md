@@ -12,6 +12,8 @@ It comes with a built-in library of over 1000 chords for the standard 6-string g
 <guitar-chord value="o|1-2|2-3|2-4|o|x" name="Am (custom)"></guitar-chord>
 ```
 
+**Development is ongoing, adding built-in chords!**
+
 ## Installation
 
 1.  Download the `guitar-chord.js` file.

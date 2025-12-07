@@ -1,5 +1,5 @@
 class GuitarChord extends HTMLElement {
-    static observedAttributes = ['name', 'value', 'color', 'background-color', 'silent-string-color', 'string-notes'];
+    static observedAttributes = ['name', 'value', 'color', 'background-color', 'muted-string-color', 'open-string-notes'];
 
     constructor() {
         super();
@@ -11,6 +11,15 @@ class GuitarChord extends HTMLElement {
     }
 
     render() {
+        if (this.name == null || this.name === '') {
+            this.shadowRoot.innerHTML = 'Missing mandatory attribute "name"';
+            return;
+        }
+        if (this.value == null || this.value === '') {
+            this.shadowRoot.innerHTML = 'Missing build-in chord definition for chord ' + this.name;
+            return;
+        }
+
         const svgNamespace = 'http://www.w3.org/2000/svg';
         this.shadowRoot.innerHTML = '';
         const model = this.model;
@@ -25,7 +34,7 @@ class GuitarChord extends HTMLElement {
         svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
         svg.setAttribute('width', String(width));
         svg.setAttribute('height', String(height));
-        svg.setAttribute('style', `font-family: Arial, sans-serif; background-color: ${this.backgroundColor};`);
+        svg.setAttribute('style', `font-family: Arial, sans-serif; color: ${this.color}; background-color: ${this.backgroundColor};`);
 
         const text = document.createElementNS(svgNamespace, 'text');
         text.setAttribute('x', String(width / 2));
@@ -91,7 +100,7 @@ class GuitarChord extends HTMLElement {
             string.setAttribute('y1', String(stringsStartTop));
             string.setAttribute('x2', String(x));
             string.setAttribute('y2', String(height - 10));
-            string.setAttribute('stroke', model.strings[i].fret === null ? this.silentStringColor : this.color);
+            string.setAttribute('stroke', model.strings[i].fret === null ? this.mutedStringColor : this.color);
             string.setAttribute('stroke-width', '1.5');
             svg.append(string);
 
@@ -101,7 +110,7 @@ class GuitarChord extends HTMLElement {
             label.setAttribute('text-anchor', 'middle');
             label.setAttribute('font-size', '12');
             if (model.strings[i].fret == null) {
-                label.setAttribute('stroke', this.silentStringColor);
+                label.setAttribute('stroke', this.mutedStringColor);
                 label.textContent = 'x';
             } else if (model.strings[i].fret === 0) {
                 label.textContent = 'o';
@@ -137,7 +146,7 @@ class GuitarChord extends HTMLElement {
             note.setAttribute('text-anchor', 'middle');
             note.setAttribute('font-size', '10');
             note.setAttribute('font-weight', '600');
-            note.textContent = this.stringNotes[i] || '';
+            note.textContent = this.openStringNotes[i] || '';
             svg.append(note);
         }
 
@@ -161,7 +170,7 @@ class GuitarChord extends HTMLElement {
     }
 
     get color() {
-        return this.getAttribute('color') || 'black';
+        return this.getAttribute('color') || '#000000';
     }
 
     set color(value) {
@@ -169,27 +178,41 @@ class GuitarChord extends HTMLElement {
     }
 
     get backgroundColor() {
-        return this.getAttribute('background-color') || 'white';
+        return this.getAttribute('background-color') || '#FFFFFF';
     }
 
     set backgroundColor(value) {
         this.setAttribute('background-color', value);
     }
 
-    get silentStringColor() {
-        return this.getAttribute('silent-string-color') || '#D70040';
+    get mutedStringColor() {
+        return this.getAttribute('muted-string-color') || '#D70040';
     }
 
-    set silentStringColor(value) {
-        this.setAttribute('silent-string-color', value);
+    set mutedStringColor(value) {
+        this.setAttribute('muted-string-color', value);
     }
 
-    get stringNotes() {
-        return this.getAttribute('string-notes')?.split('|') || ['E', 'B', 'G', 'D', 'A', 'E'];
+    get openStringNotes() {
+        return this.getAttribute('open-string-notes')?.split('|') || ['E', 'A', 'D', 'G', 'B', 'E'];
     }
 
-    set stringNotes(values) {
-        this.setAttribute('string-notes', values?.join('|'));
+    set openStringNotes(values) {
+        this.setAttribute('open-string-notes', values?.join('|'));
+    }
+
+    get notes() {
+        return ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    }
+
+    getNote(stringIndex, fret = null) {
+        let note = this.openStringNotes[stringIndex];
+        if (fret && fret > 0) {
+            let indexOfNote = this.notes.indexOf(note);
+            indexOfNote = (indexOfNote + fret) % this.notes.length;
+            note = this.notes[indexOfNote];
+        }
+        return note;
     }
 
     get model() {
@@ -408,7 +431,14 @@ class GuitarChord extends HTMLElement {
         'C#/Dbsus2sus4': 'x|4-1|4-1|6-4|4-1|4-1',
         'C#/Dbsus2sus4(9)': '9-1|9-1|11-2|11-3|9-1|11-4',
         'C#/Dbsus2sus4(11)': 'x|x|11-1|11-1|14-4|11-1',
-        'C#/Db-5': 'x|4-1|5-2|6-4|6-4|x'
+        'C#/Db-5': 'x|4-1|5-2|6-4|6-4|x',
+
+        'G':'3-2|2-1|o|o|o|3-3',
+        'D':'x|x|o|2-1|3-3|2-2',
+        'E':'o|2-2|2-3|1-1|o|o',
+        'Em':'o|2-2|2-3|o|o|o',
+        'A':'x|o|2-1|2-2|2-3|o',
+        'Am':'x|o|2-2|2-3|1-1|o',
     };
 }
 

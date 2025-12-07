@@ -2,43 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Guitar Chord</title>
+    <title>Guitar Chords</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-<h1>Guitar Chord</h1>
-<h2>7 most popular guitar chords</h2>
-<guitar-chord name="G"></guitar-chord>
-<guitar-chord name="C"></guitar-chord>
-<guitar-chord name="D"></guitar-chord>
-<guitar-chord name="E"></guitar-chord>
-<guitar-chord name="A"></guitar-chord>
-<guitar-chord name="Em"></guitar-chord>
-<guitar-chord name="Am"></guitar-chord>
+<div class="container">
+    <h1>Guitar Chords</h1>
+    <div class="p-4 bg-body-tertiary rounded-3 border"><h2>7 most popular guitar chords</h2>
+        <guitar-chord name="G" class="m-1"></guitar-chord>
+        <guitar-chord name="C" class="m-1"></guitar-chord>
+        <guitar-chord name="D" class="m-1"></guitar-chord>
+        <guitar-chord name="E" class="m-1"></guitar-chord>
+        <guitar-chord name="A" class="m-1"></guitar-chord>
+        <guitar-chord name="Em" class="m-1"></guitar-chord>
+        <guitar-chord name="Am" class="m-1"></guitar-chord>
+    </div>
 
-<div id="chordList"></div>
-
+    <div class="input-group my-2">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input type="search" id="chordFilter" class="form-control" placeholder="Search for chords..."/>
+    </div>
+    <div id="chordList"></div>
+</div>
 <script src="../guitar-chord.js"></script>
 <script>
     const chordList = document.getElementById('chordList');
-    const chordGroups = new Map();
-    for (const name of Object.keys(GuitarChord.CHORDS)) {
-        const group = name.charAt(0);
-        if (!chordGroups.hasOwnProperty(group)) {
-            chordGroups[group] = [];
+    const chordFilter = document.getElementById('chordFilter');
+
+
+    function render(names) {
+        const chordGroups = new Map();
+        chordList.innerHTML = '';
+        console.log('Rendering chords', names);
+        for (const name of names) {
+            const group = name.charAt(0);
+            if (!chordGroups.hasOwnProperty(group)) {
+                chordGroups[group] = [];
+            }
+            chordGroups[group].push(name);
         }
-        chordGroups[group].push(name);
+
+        for (const group in chordGroups) {
+            const h2 = document.createElement('h2');
+            h2.textContent = group + ' chords';
+            chordList.append(h2);
+            for (const name of chordGroups[group]) {
+                const chord = document.createElement('guitar-chord');
+                chord.name = name;
+                chordList.append(chord);
+            }
+        }
     }
 
-    for (const group in chordGroups) {
-        const h2 = document.createElement('h2');
-        h2.textContent = group + ' chords';
-        chordList.append(h2);
-        for (const name of chordGroups[group]) {
-            const chord = document.createElement('guitar-chord');
-            chord.name = name;
-            chordList.append(chord);
+    chordFilter.addEventListener('input', function () {
+        let filter = chordFilter.value.toLowerCase();
+        let names = Object.keys(GuitarChord.CHORDS);
+        if (filter !== '') {
+            names = names.filter(name => name.toLowerCase().startsWith(filter));
         }
+        if (names.length > 0) {
+            render(names);
+        } else {
+            chordList.innerHTML = 'No chords found';
+        }
+        window.location.hash = chordFilter.value;
+    });
+
+    if (window.location.hash && window.location.hash.length > 1) {
+        chordFilter.value = window.location.hash.substring(1);
     }
+
+    chordFilter.dispatchEvent(new Event('input'));
 
 </script>
 </body>

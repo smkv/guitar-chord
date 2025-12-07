@@ -42,10 +42,11 @@ class GuitarChord extends HTMLElement {
         text.setAttribute('text-anchor', 'middle');
         text.setAttribute('font-size', '16');
         text.setAttribute('font-weight', '900');
+        text.setAttribute('fill', this.color);
         text.textContent = this.name;
         svg.append(text);
 
-        const fretSpace = (height - stringsStartTop - 10) / model.visibleFretCount;
+        const fretSpace = (height - stringsStartTop - 15) / model.visibleFretCount;
         for (let i = 0; i < model.visibleFretCount; i++) {
             const y = stringsStartTop + (fretSpace * i);
             const fret = document.createElementNS(svgNamespace, 'line');
@@ -62,6 +63,7 @@ class GuitarChord extends HTMLElement {
             fretLabel.setAttribute('y', String(stringsStartTop + (fretSpace * i) + (fretSpace / 2) + 4));
             fretLabel.setAttribute('text-anchor', 'end');
             fretLabel.setAttribute('font-size', '12');
+            fretLabel.setAttribute('fill', this.color);
             fretLabel.textContent = String(model.startFret + i);
             svg.append(fretLabel);
         }
@@ -99,7 +101,7 @@ class GuitarChord extends HTMLElement {
             string.setAttribute('x1', String(x));
             string.setAttribute('y1', String(stringsStartTop));
             string.setAttribute('x2', String(x));
-            string.setAttribute('y2', String(height - 10));
+            string.setAttribute('y2', String(height - 15));
             string.setAttribute('stroke', model.strings[i].fret === null ? this.mutedStringColor : this.color);
             string.setAttribute('stroke-width', '1.5');
             svg.append(string);
@@ -109,8 +111,9 @@ class GuitarChord extends HTMLElement {
             label.setAttribute('y', String(stringsStartTop - 5));
             label.setAttribute('text-anchor', 'middle');
             label.setAttribute('font-size', '12');
+            label.setAttribute('fill', this.color);
             if (model.strings[i].fret == null) {
-                label.setAttribute('stroke', this.mutedStringColor);
+                label.setAttribute('fill', this.mutedStringColor);
                 label.textContent = 'x';
             } else if (model.strings[i].fret === 0) {
                 label.textContent = 'o';
@@ -142,10 +145,11 @@ class GuitarChord extends HTMLElement {
 
             const note = document.createElementNS(svgNamespace, 'text');
             note.setAttribute('x', String(x));
-            note.setAttribute('y', String(height));
+            note.setAttribute('y', String(height - 5));
             note.setAttribute('text-anchor', 'middle');
             note.setAttribute('font-size', '10');
             note.setAttribute('font-weight', '600');
+            note.setAttribute('fill', this.color);
             note.textContent = this.openStringNotes[i] || '';
             svg.append(note);
         }

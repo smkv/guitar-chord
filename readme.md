@@ -59,18 +59,18 @@ For example, the built-in library contains multiple voicings for the D major cho
 
 ### Notes
 
-| Alphabetical | Note |
-|--------------|------|
-| C            | Do   |
-| D            | Re   |
-| E            | Mi   |
-| F            | Fa   |
-| G            | So   |
-| A            | La   |
-| B/H          | Si   |
+| Alphabetical name | Musical note name |
+|-------------------|-------------------|
+| `C`               | Do                |
+| `D`               | Re                |
+| `E`               | Mi                |
+| `F`               | Fa                |
+| `G`               | So                |
+| `A`               | La                |
+| `B`/`H`           | Si                |
 
 ### Finger numbers
-![finger-numbers.png](examples/finger-numbers.png)
+<img src="examples/finger-numbers.png" alt="Finger numbers schema" />
 
 
 ### Examples
@@ -82,6 +82,7 @@ The simplest use case is to render a chord from the component's internal library
 ```html
 <guitar-chord name="G"></guitar-chord>
 ```
+<img src="examples/chord-g.png" alt="G chord example" width="160">
 
 #### 2. Display a custom chord
 
@@ -90,6 +91,7 @@ Use the `value` attribute to define a chord that isn't in the library or to show
 ```html
 <guitar-chord name="F" value="1-1|1-1|2-2|3-3|3-4|1-1"></guitar-chord>
 ```
+<img src="examples/custom-chord-f.png" alt="F chord example" width="160">
 
 #### 3. Customize colors
 
@@ -97,12 +99,13 @@ You can easily create a "dark mode" version of a chord diagram by setting the co
 
 ```html
 <guitar-chord
-  name="Em"
-  color="white"
-  background-color="#333"
-  muted-string-color="gray"
+        name="Cm11"
+        color="white"
+        background-color="#333"
+        muted-string-color="gray"
 ></guitar-chord>
 ```
+<img src="examples/custom-colors.png" alt="Cm11 chord example" width="160">
 
 ## Adapting for Other Instruments
 
@@ -131,7 +134,7 @@ A standard ukulele has 4 strings tuned to G-C-E-A. Here is how you would display
   open-string-notes="A|E|C|G"
 ></guitar-chord>
 ```
-![ukulele-example.png](examples/ukulele-example.png)
+<img src="examples/ukulele-example.png" alt="Ukulele chords example" width="340">
 
 ### 4-String Bass Example
 
@@ -145,4 +148,4 @@ Here is a G major arpeggio on a 4-string bass guitar (E-A-D-G tuning).
   open-string-notes="G|D|A|E"
 ></guitar-chord>
 ```
-![bass-example.png](examples/bass-example.png)
+<img src="examples/bass-example.png" alt="Bass chords example" width="160">

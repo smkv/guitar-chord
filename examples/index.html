@@ -35,9 +35,8 @@
     document.getElementById('totalCount').textContent = Object.keys(GuitarChord.CHORDS).length;
 
     function render(names) {
-        const chordGroups = new Map();
+        const chordGroups = new Map([['G', []], ['C', []], ['D', []], ['E', []], ['F', []], ['G', []], ['A', []], ['B', []]]);
         chordList.innerHTML = '';
-        console.log('Rendering chords', names);
         for (const name of names) {
             const group = name.charAt(0);
             if (!chordGroups.hasOwnProperty(group)) {

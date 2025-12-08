@@ -132,6 +132,11 @@ class GuitarChord extends HTMLElement {
                 finger.setAttribute('fill', this.color);
                 svg.append(finger);
 
+                const fingerTitle = document.createElementNS(svgNamespace, 'title');
+                fingerTitle.textContent = this.getNote(i, model.strings[i].fret);
+                finger.append(fingerTitle);
+
+
                 if (model.strings[i].finger !== 0) {
                     const fingerLabel = document.createElementNS(svgNamespace, 'text');
                     fingerLabel.setAttribute('x', String(x));

@@ -32,6 +32,11 @@ class GuitarChord extends HTMLElement {
         this.render();
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+        this.render();
+    }
+
+
     render() {
         if (this.name == null || this.name === '') {
             this.shadowRoot.innerHTML = 'Missing mandatory attribute "name"';

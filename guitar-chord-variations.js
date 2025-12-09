@@ -34,14 +34,17 @@ class GuitarChordVariations extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        this.render();
+        if (this.shadowRoot) {
+            this.render();
+        }
     }
 
     render() {
         this.shadowRoot.innerHTML = '';
         if (this.name) {
             let names = Object.keys(GuitarChord.CHORDS)
-                .filter(n => n === name || n.startsWith(this.name + '('))
+                .filter(n => n === this.name || n.startsWith(this.name + '['))
+                .sort(this._sortByFretAndVersio.bind(this));
             for (let name of names) {
                 let guitarChord = document.createElement('guitar-chord');
                 guitarChord.name = name;
@@ -54,6 +57,31 @@ class GuitarChordVariations extends HTMLElement {
         }
     }
 
+    _sortByFretAndVersio(a, b) {
+        a = this._nameToFretVersion(a);
+        b = this._nameToFretVersion(b);
+        if (a.length !== b.length) {
+            return a.length - b.length;
+        }
+
+        for (let i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) {
+                return a[i] - b[i];
+            }
+        }
+
+        return 0;
+    }
+
+    _nameToFretVersion(name) {
+        const regex = /.+\[(\d+)(-(\d+))?]/;
+        let result = regex.exec(name);
+        return [
+            result && result[1] ? parseInt(result[1]) : 0,
+            result && result[3] ? parseInt(result[3]) : 1,
+        ];
+    }
+
     get name() {
         return this.getAttribute('name') || '';
     }
@@ -63,7 +91,7 @@ class GuitarChordVariations extends HTMLElement {
     }
 
     get color() {
-        return this.getAttribute('color') || '#000000';
+        return this.getAttribute('color') || '';
     }
 
     set color(value) {
@@ -71,7 +99,7 @@ class GuitarChordVariations extends HTMLElement {
     }
 
     get backgroundColor() {
-        return this.getAttribute('background-color') || '#FFFFFF';
+        return this.getAttribute('background-color') || '';
     }
 
     set backgroundColor(value) {
@@ -79,7 +107,7 @@ class GuitarChordVariations extends HTMLElement {
     }
 
     get mutedStringColor() {
-        return this.getAttribute('muted-string-color') || '#D70040';
+        return this.getAttribute('muted-string-color') || '';
     }
 
     set mutedStringColor(value) {
@@ -87,7 +115,7 @@ class GuitarChordVariations extends HTMLElement {
     }
 
     get openStringNotes() {
-        return this.getAttribute('open-string-notes')?.split('|') || ['E', 'A', 'D', 'G', 'B', 'E'];
+        return this.getAttribute('open-string-notes')?.split('|') || ['E', 'A', 'D', 'G', 'B', 'e'];
     }
 
     set openStringNotes(values) {

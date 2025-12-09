@@ -4,7 +4,7 @@
 
 A simple, dependency-free web component to display guitar chord diagrams as SVG images.
 
-It comes with a built-in library of over 1000 chords for the standard 6-string guitar (classical/acoustic) and allows for easy definition of custom chords and color schemes. Because it's a standard web component, it can be used in any HTML page or with any JavaScript framework.
+It comes with a built-in library of over 2600 chords for the standard 6-string guitar (classical/acoustic) and allows for easy definition of custom chords and color schemes. Because it's a standard web component, it can be used in any HTML page or with any JavaScript framework.
 
 ```html
 <guitar-chord name="C"></guitar-chord>
@@ -12,7 +12,10 @@ It comes with a built-in library of over 1000 chords for the standard 6-string g
 <guitar-chord value="o|1-2|2-3|2-4|o|x" name="Am (custom)"></guitar-chord>
 ```
 
-**Development is ongoing, adding built-in chords!**
+### Built-in guitar chords source
+The built-in guitar chords use data from the [Guitar Chords finger positions Data Set](https://www.kaggle.com/datasets/aartiravariya/chordfingerscsv) which was automatically converted to the component's required format.
+As the fact - this dataset was originally created for a guitar learning software project (https://www.fachords.com)
+
 
 ## Installation
 
@@ -37,7 +40,7 @@ The component is configured through HTML attributes.
 |---------------------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `name`              | string  | **(Mandatory)** The name of the chord to display from the built-in library (e.g., "C", "Am", "G7"). Or a custom chord name if the `value` attribute is present.                                                                                                                                                                                           |
 | `value`             | string  | **(Conditional)** A pipe-separated string that defines a custom chord. If this attribute is present, it takes precedence over `name`. The format is `s1\|s2\|s3\|s4\|s5\|s6`, where `s1` is the 1st (thinnest) string. Each part can be: `x` (muted), `o` (open), a fret number (e.g., `3`), or a fret number with a finger (`fret-finger`, e.g., `3-4`). |
-| `open-string-notes` | string  | **(Conditional)** A pipe-separated open string notes. By default - `E\|A\|D\|G\|B\|E` for the standard 6-string guitar (classical/acoustic).                                                                                                                                                                                                              |
+| `open-string-notes` | string  | **(Conditional)** A pipe-separated open string notes. By default - `E\|A\|D\|G\|B\|e` for the standard 6-string guitar (classical/acoustic).                                                                                                                                                                                                              |
 
 
 #### Visual Customization
@@ -51,12 +54,12 @@ The component is configured through HTML attributes.
 
 ### Built-in Chord Naming
 
-The component includes a library of over 1000 chords. Many chords can be played in different positions (voicings) along the guitar neck. The naming convention helps distinguish between these variations.
+The component includes a library of over 2600 chords. Many chords can be played in different positions (voicings) along the guitar neck. The naming convention helps distinguish between these variations.
 
 *   A plain chord name like `D` usually refers to the most common, open-position voicing.
-*   Alternate voicings are indicated by a number in parentheses, like `D(5)`. This number represents the **lowest fret** used in that particular chord shape.
+*   Alternate voicings are indicated by a number in parentheses, like `D[5]`. This number represents the **lowest fret** used in that particular chord shape. If there are several chords of the same fret then adding a version number into parentheses, like `D[2-1]` and `D[2-2]`
 
-For example, the built-in library contains multiple voicings for the D major chord: `D`, `D(2)`, `D(5)`, `D(7)`, `D(10)`, and `D(12)`.
+For example, the built-in library contains multiple voicings for the D major chord: `D`, `D[2]`, `D[5]`, `D[7]` and `D[10]`.
 ![chort-d-variations.png](examples/chort-d-variations.png)
 
 ### Notes

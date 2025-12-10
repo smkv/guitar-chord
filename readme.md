@@ -16,6 +16,8 @@ It comes with a built-in library of over 2600 chords for the standard 6-string g
 The built-in guitar chords use data from the [Guitar Chords finger positions Data Set](https://www.kaggle.com/datasets/aartiravariya/chordfingerscsv) which was automatically converted to the component's required format.
 As the fact - this dataset was originally created for a guitar learning software project (https://www.fachords.com)
 
+Click here to see and search the built-in guitar chords: https://smkv.github.io/guitar-chord/.
+I recommend checking out the 30 most popular chords by visiting https://smkv.github.io/guitar-chord/30-popular-chords.html.
 
 ## Installation
 

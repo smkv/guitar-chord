@@ -25,7 +25,7 @@ I recommend checking out the 30 most popular chords by visiting https://smkv.git
 2.  Include it in your HTML file using a `<script>` tag.
 
 ```html
-<script type="module" src="/path/to/guitar-chord.js"></script>
+<script src="/path/to/guitar-chord.js"></script>
 ```
 
 ## Usage

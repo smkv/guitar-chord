@@ -10,12 +10,20 @@
 <body>
 <div class="container">
     <h1>Guitar Chords</h1>
-    <small>Total <span id="totalCount">0</span> built-in guitar chords. Powered by <a href="https://github.com/smkv/guitar-chord">guitar-chord</a> Open-Source WebComponent. Copyright &copy; Andrei Sammov</small>
+    <div class="small">Total <span id="totalCount">0</span> built-in guitar chords.</div>
+    <div class="small">Please checking out <a href="https://smkv.github.io/guitar-chord/30-popular-chords.html">the 30 most popular
+        chords</a>.
+    </div>
+
     <div class="input-group my-2">
         <span class="input-group-text"><i class="bi bi-search"></i></span>
         <input type="search" id="chordFilter" class="form-control" placeholder="Search for chords..."/>
     </div>
     <div id="chordList"></div>
+    <hr />
+    <div  class="small mb-4">Powered by <a href="https://github.com/smkv/guitar-chord">guitar-chord</a> Open-Source WebComponent. Copyright
+        &copy; 2025 Andrei Samkov
+    </div>
 </div>
 <script src="guitar-chord.js"></script>
 <script>

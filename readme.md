@@ -1,6 +1,6 @@
 # Guitar Chord Web Component
 
-![7-popular-chords.png](examples/7-popular-chords.png)
+![7-popular-chords.png](docs/7-popular-chords.png)
 
 A simple, dependency-free web component to display guitar chord diagrams as SVG images.
 
@@ -60,7 +60,7 @@ The component includes a library of over 2600 chords. Many chords can be played 
 *   Alternate voicings are indicated by a number in parentheses, like `D[5]`. This number represents the **lowest fret** used in that particular chord shape. If there are several chords of the same fret then adding a version number into parentheses, like `D[2-1]` and `D[2-2]`
 
 For example, the built-in library contains multiple voicings for the D major chord: `D`, `D[2]`, `D[5]`, `D[7]` and `D[10]`.
-![chort-d-variations.png](examples/chort-d-variations.png)
+![chort-d-variations.png](docs/chort-d-variations.png)
 
 ### Notes
 
@@ -75,7 +75,7 @@ For example, the built-in library contains multiple voicings for the D major cho
 | `B`/`H`           | Si                |
 
 ### Finger numbers
-<img src="examples/finger-numbers.png" alt="Finger numbers schema" />
+<img src="docs/finger-numbers.png" alt="Finger numbers schema" />
 
 
 ### Examples
@@ -87,7 +87,7 @@ The simplest use case is to render a chord from the component's internal library
 ```html
 <guitar-chord name="G"></guitar-chord>
 ```
-<img src="examples/chord-g.png" alt="G chord example" width="160">
+<img src="docs/chord-g.png" alt="G chord example" width="160">
 
 #### 2. Display a custom chord
 
@@ -96,7 +96,7 @@ Use the `value` attribute to define a chord that isn't in the library or to show
 ```html
 <guitar-chord name="F" value="1-1|1-1|2-2|3-3|3-4|1-1"></guitar-chord>
 ```
-<img src="examples/custom-chord-f.png" alt="F chord example" width="160">
+<img src="docs/custom-chord-f.png" alt="F chord example" width="160">
 
 #### 3. Customize colors
 
@@ -110,7 +110,7 @@ You can easily create a "dark mode" version of a chord diagram by setting the co
         muted-string-color="gray"
 ></guitar-chord>
 ```
-<img src="examples/custom-colors.png" alt="Cm11 chord example" width="160">
+<img src="docs/custom-colors.png" alt="Cm11 chord example" width="160">
 
 ## Adapting for Other Instruments
 
@@ -139,7 +139,7 @@ A standard ukulele has 4 strings tuned to G-C-E-A. Here is how you would display
   open-string-notes="A|E|C|G"
 ></guitar-chord>
 ```
-<img src="examples/ukulele-example.png" alt="Ukulele chords example" width="340">
+<img src="docs/ukulele-example.png" alt="Ukulele chords example" width="340">
 
 ### 4-String Bass Example
 
@@ -153,4 +153,4 @@ Here is a G major arpeggio on a 4-string bass guitar (E-A-D-G tuning).
   open-string-notes="G|D|A|E"
 ></guitar-chord>
 ```
-<img src="examples/bass-example.png" alt="Bass chords example" width="160">
+<img src="docs/bass-example.png" alt="Bass chords example" width="160">

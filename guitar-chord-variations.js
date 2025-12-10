@@ -44,7 +44,7 @@ class GuitarChordVariations extends HTMLElement {
         if (this.name) {
             let names = Object.keys(GuitarChord.CHORDS)
                 .filter(n => n === this.name || n.startsWith(this.name + '['))
-                .sort(this._sortByFretAndVersio.bind(this));
+                .sort(this._sortByFretAndVersion.bind(this));
             for (let name of names) {
                 let guitarChord = document.createElement('guitar-chord');
                 guitarChord.name = name;
@@ -57,7 +57,7 @@ class GuitarChordVariations extends HTMLElement {
         }
     }
 
-    _sortByFretAndVersio(a, b) {
+    _sortByFretAndVersion(a, b) {
         a = this._nameToFretVersion(a);
         b = this._nameToFretVersion(b);
         if (a.length !== b.length) {

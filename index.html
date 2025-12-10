@@ -11,7 +11,8 @@
 <div class="container">
     <h1>Guitar Chords</h1>
     <div class="small">Total <span id="totalCount">0</span> built-in guitar chords.</div>
-    <div class="small">Please checking out <a href="https://smkv.github.io/guitar-chord/30-popular-chords.html">the 30 most popular
+    <div class="small">Please checking out <a href="https://smkv.github.io/guitar-chord/30-popular-chords.html">the 30
+        most popular
         chords</a>.
     </div>
 
@@ -20,8 +21,9 @@
         <input type="search" id="chordFilter" class="form-control" placeholder="Search for chords..."/>
     </div>
     <div id="chordList"></div>
-    <hr />
-    <div  class="small mb-4">Powered by <a href="https://github.com/smkv/guitar-chord">guitar-chord</a> Open-Source WebComponent. Copyright
+    <hr/>
+    <div class="small mb-4">Powered by <a href="https://github.com/smkv/guitar-chord">guitar-chord</a> Open-Source
+        WebComponent. Copyright
         &copy; 2025 Andrei Samkov
     </div>
 </div>
@@ -56,10 +58,37 @@
     }
 
     chordFilter.addEventListener('input', function () {
-        let filter = chordFilter.value.toLowerCase();
+        const filter = chordFilter.value.toLowerCase();
         let names = Object.keys(GuitarChord.CHORDS);
         if (filter !== '') {
-            names = names.filter(name => name.toLowerCase().startsWith(filter));
+            const exactMatch = name => name.toLowerCase() === filter || name.toLowerCase().startsWith(filter + '[');
+            const otherMatch = name => !exactMatch(name) && name.toLowerCase().startsWith(filter);
+            const nameToFretVersion = name => {
+                const regex = /.+\[(\d+)(-(\d+))?]/;
+                let result = regex.exec(name);
+                return [
+                    result && result[1] ? parseInt(result[1]) : 0,
+                    result && result[3] ? parseInt(result[3]) : 1,
+                ];
+            }
+            const sortByFretAndVersion = (a, b) => {
+                a = nameToFretVersion(a);
+                b = nameToFretVersion(b);
+                if (a.length !== b.length) {
+                    return a.length - b.length;
+                }
+
+                for (let i = 0; i < a.length; i++) {
+                    if (a[i] !== b[i]) {
+                        return a[i] - b[i];
+                    }
+                }
+
+                return 0;
+            };
+
+
+            names = names.filter(exactMatch).sort(sortByFretAndVersion).concat(names.filter(otherMatch).sort(sortByFretAndVersion));
         }
         if (names.length > 0) {
             render(names);

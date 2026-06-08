@@ -52,6 +52,38 @@ The component is configured through HTML attributes.
 | `color`               | string | `#000000` <img width="40" height="20" src="https://dummyimage.com/40x20/000000/000000.png">   | The primary color for frets, strings, and finger dots. |
 | `background-color`    | string | `#FFFFFF` <img width="40" height="20" src="https://dummyimage.com/40x20/FFFFFF/FFFFFF.png">   | The background color of the chord diagram.           |
 | `muted-string-color`  | string | `#D70040` <img width="40" height="20" src="https://dummyimage.com/40x20/D70040/D70040.png">   | The color for muted ("x") strings.                   |
+| `size`                | string | `160`                                                                                         | Shorthand to set both width and height of the component. Can be a number (e.g. `200` for 200px) or CSS unit. |
+| `width`               | string | `160`                                                                                         | The width of the component. Can be a number or CSS unit (e.g., `100%`, `200px`). |
+| `height`              | string | `160`                                                                                         | The height of the component. Can be a number or CSS unit. |
+
+### Sizing and Responsiveness
+
+By default, the component renders at `160px` by `160px`. You can customize the size of the diagram in two ways:
+
+#### 1. Using Attributes
+You can use `size` or individual `width` and `height` attributes:
+
+```html
+<!-- Set equal width and height to 240px -->
+<guitar-chord name="C" size="240"></guitar-chord>
+
+<!-- Set different width and height using CSS units -->
+<guitar-chord name="Am" width="100%" height="250px"></guitar-chord>
+```
+
+#### 2. Using CSS
+You can also style the element directly using CSS. Light DOM CSS styling overrides the default size as well as any sizing attributes:
+
+```css
+guitar-chord {
+    width: 300px;
+    height: 300px;
+}
+```
+
+```html
+<guitar-chord name="G" class="large-chord"></guitar-chord>
+```
 
 
 ### Built-in Chord Naming

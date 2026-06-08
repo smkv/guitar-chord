@@ -22,14 +22,16 @@ SOFTWARE.
 */
 
 class GuitarChordVariations extends HTMLElement {
-    static observedAttributes = ['name', 'color', 'background-color', 'muted-string-color', 'open-string-notes'];
+    static observedAttributes = ['name', 'color', 'background-color', 'muted-string-color', 'open-string-notes', 'width', 'height', 'size'];
 
     constructor() {
         super();
     }
 
     connectedCallback() {
-        this.attachShadow({mode: 'open'});
+        if (!this.shadowRoot) {
+            this.attachShadow({mode: 'open'});
+        }
         this.render();
     }
 
@@ -52,6 +54,9 @@ class GuitarChordVariations extends HTMLElement {
                 guitarChord.backgroundColor = this.backgroundColor;
                 guitarChord.mutedStringColor = this.mutedStringColor;
                 guitarChord.openStringNotes = this.openStringNotes;
+                if (this.width) guitarChord.setAttribute('width', this.width);
+                if (this.height) guitarChord.setAttribute('height', this.height);
+                if (this.size) guitarChord.setAttribute('size', this.size);
                 this.shadowRoot.append(guitarChord);
             }
         }
@@ -120,6 +125,30 @@ class GuitarChordVariations extends HTMLElement {
 
     set openStringNotes(values) {
         this.setAttribute('open-string-notes', values?.join('|'));
+    }
+
+    get width() {
+        return this.getAttribute('width') || this.getAttribute('size') || '';
+    }
+
+    set width(value) {
+        this.setAttribute('width', value);
+    }
+
+    get height() {
+        return this.getAttribute('height') || this.getAttribute('size') || '';
+    }
+
+    set height(value) {
+        this.setAttribute('height', value);
+    }
+
+    get size() {
+        return this.getAttribute('size') || '';
+    }
+
+    set size(value) {
+        this.setAttribute('size', value);
     }
 }
 

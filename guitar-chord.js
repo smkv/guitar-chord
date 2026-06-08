@@ -21,14 +21,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 class GuitarChord extends HTMLElement {
-    static observedAttributes = ['name', 'value', 'color', 'background-color', 'muted-string-color', 'open-string-notes'];
+    static observedAttributes = ['name', 'value', 'color', 'background-color', 'muted-string-color', 'open-string-notes', 'width', 'height', 'size'];
 
     constructor() {
         super();
     }
 
     connectedCallback() {
-        this.attachShadow({mode: 'open'});
+        if (!this.shadowRoot) {
+            this.attachShadow({mode: 'open'});
+        }
         this.render();
     }
 
@@ -52,11 +54,32 @@ class GuitarChord extends HTMLElement {
         const interFretDistance = (height - stringsStartTop - stringsEndBottom) / model.visibleFretCount;
         const interStringDistance = (width - (xMargin * 2)) / (model.strings.length - 1);
 
+        const style = document.createElement('style');
+        const formatDimension = (val) => {
+            if (!val) return null;
+            return /^\d+$/.test(val) ? `${val}px` : val;
+        };
+        const w = formatDimension(this.width) || '160px';
+        const h = formatDimension(this.height) || '160px';
+        style.textContent = `
+            :host {
+                display: inline-block;
+                width: ${w};
+                height: ${h};
+            }
+            svg {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        `;
+        this.shadowRoot.append(style);
+
         const svg = document.createElementNS(svgNamespace, 'svg');
         svg.setAttribute('xmlns', svgNamespace);
         svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-        svg.setAttribute('width', String(width));
-        svg.setAttribute('height', String(height));
+        svg.setAttribute('width', '100%');
+        svg.setAttribute('height', '100%');
         svg.setAttribute('style', `font-family: Arial, sans-serif; color: ${this.color}; background-color: ${this.backgroundColor};`);
 
         const nameLabel = document.createElementNS(svgNamespace, 'text');
@@ -232,6 +255,30 @@ class GuitarChord extends HTMLElement {
 
     set openStringNotes(values) {
         this.setAttribute('open-string-notes', values?.join('|'));
+    }
+
+    get width() {
+        return this.getAttribute('width') || this.getAttribute('size') || '';
+    }
+
+    set width(value) {
+        this.setAttribute('width', value);
+    }
+
+    get height() {
+        return this.getAttribute('height') || this.getAttribute('size') || '';
+    }
+
+    set height(value) {
+        this.setAttribute('height', value);
+    }
+
+    get size() {
+        return this.getAttribute('size') || '';
+    }
+
+    set size(value) {
+        this.setAttribute('size', value);
     }
 
     get notes() {
